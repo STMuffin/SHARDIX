@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#050101">
+<title>. . .</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style-grieta.css">
+</head>
+<body>
+
+<div id="stars"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo"><span class="nav-avatar-wrap"><img class="nav-avatar nav-avatar-normal" src="images/avatar.png" alt="" onerror="this.style.display='none'"><img class="nav-avatar nav-avatar-hover" src="images/avatar-hover.png" alt="" onerror="this.style.display='none'"></span>STARY<span class="heart">♥</span>MUFFIN</a>
+  <ul class="nav-links">
+    <li><a href="blog.html">volver</a></li>
+  </ul>
+</nav>
+
+<header class="page-header">
+  <h1>* no deberías estar aquí</h1>
+  <p>pero ya que llegaste, quédate un rato.</p>
+</header>
+
+<div id="listView">
+  <div class="post-list" id="postList"></div>
+</div>
+
+<div id="detailView" class="post-detail" style="display:none;"></div>
+
+<footer>
+  <div class="copy">. . .</div>
+</footer>
+
+<script src="stars.js"></script>
+<script src="font-detect.js"></script>
+<script src="posts-data-grieta.js"></script>
+<script src="post-render.js"></script>
+<script>
+const listView = document.getElementById('listView');
+const detailView = document.getElementById('detailView');
+const postList = document.getElementById('postList');
+
+const sorted = [...POSTS].sort((a,b)=> new Date(b.date) - new Date(a.date));
+
+wireNsfwReveal(postList);
+wireNsfwReveal(detailView);
+
+function renderList(){
+  postList.innerHTML = '';
+
+  if(sorted.length === 0){
+    postList.innerHTML = '<div class="empty-note">* todavía no hay nada aquí...</div>';
+    return;
+  }
+
+  sorted.forEach((post, i)=>{
+    const card = document.createElement('button');
+    card.className = 'post-card pd-enter';
+    card.style.animationDelay = (i * 0.04) + 's';
+    card.innerHTML = renderPostCardInner(post);
+    card.addEventListener('click', ()=> openPost(post.slug));
+    postList.appendChild(card);
+  });
+}
+
+function openPost(slug){
+  const post = sorted.find(p => p.slug === slug);
+  if(!post) return;
+  location.hash = slug;
+  listView.style.display = 'none';
+  detailView.style.display = 'block';
+
+  const coverHtml = post.cover
+    ? imageMarkup(post.cover, '', post.coverNsfw, 'pd-cover', 'pd-cover-wrap', true)
+    : '';
+
+  const pendingTextFiles = [];
+  const bodyHtml = renderBody(post.content, pendingTextFiles);
+
+  detailView.innerHTML = `
+    <a class="back-link pd-enter" href="grieta.html" style="animation-delay:0s;">&larr; volver</a>
+    <h1 class="pd-enter" style="animation-delay:.04s;">${post.title}</h1>
+    <div class="pd-meta pd-enter" style="animation-delay:.08s;">${formatDate(post.date)}</div>
+    <div class="pd-tags pd-enter" style="animation-delay:.12s;">${(post.tags||[]).map(t=>`<span class="pill">${t}</span>`).join('')}</div>
+    <div class="pd-enter" style="animation-delay:.16s;">${coverHtml}</div>
+    <div class="pd-body pd-enter" style="animation-delay:.2s;"${postFontStyle(post.font)}>${bodyHtml}</div>
+  `;
+
+  pendingTextFiles.forEach(({id, path}) => loadTextFile(id, path));
+  if(detailView.querySelector('.twitter-tweet')) loadTwitterWidgets(detailView);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function closeDetail(){
+  history.replaceState(null,'',location.pathname);
+  detailView.style.display = 'none';
+  listView.style.display = 'block';
+  renderList();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+detailView.addEventListener('click', (e)=>{
+  if(e.target.closest('.back-link')){
+    e.preventDefault();
+    closeDetail();
+  }
+});
+
+renderList();
+
+if(location.hash){
+  openPost(location.hash.slice(1));
+}
+</script>
+
+</body>
+</html>

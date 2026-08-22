@@ -1,0 +1,76 @@
+/*
+  STYLE-GRIETA.CSS
+  ----------------------------------------
+  Tema oscuro/terrorífico para la página escondida (grieta.html).
+  Se carga DESPUÉS de style.css, así que solo necesita sobreescribir
+  las variables de color y sumar los efectos nuevos (parpadeo, viñeta,
+  glitch en los títulos). Todo lo demás (tarjetas, tags, tipografía,
+  el sistema de posts) se hereda tal cual de style.css.
+*/
+
+:root{
+  --bg:#050101;
+  --panel:#0d0505;
+  --white:#c9c2c2;
+  --dim:#5a4646;
+  --gold:#8a1414;
+  --gold-dim:#3a0808;
+  --border:#3a1414;
+}
+
+html,body{background:var(--bg);}
+
+/* viñeta oscura fija, se cierra un poco más hacia las orillas */
+body::before{
+  content:"";
+  position:fixed;inset:0;
+  pointer-events:none;z-index:2;
+  background:radial-gradient(ellipse at center, transparent 38%, rgba(0,0,0,.88) 100%);
+}
+
+/* parpadeo ocasional de toda la pantalla, como luz fallando */
+@keyframes grietaFlicker{
+  0%,95%,100%{opacity:1;}
+  96%{opacity:.8;}
+  97%{opacity:.97;}
+  98%{opacity:.65;}
+  99%{opacity:.95;}
+}
+body{animation:grietaFlicker 8s infinite;}
+
+/* las estrellas de fondo pasan a verse como ceniza rojiza */
+#stars .star{background:#5a1414;}
+
+nav{border-bottom-color:var(--border);}
+.nav-logo{color:var(--white);}
+.nav-logo .heart{color:var(--gold);}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);}
+
+/* título con leve glitch, como si la señal fallara */
+.page-header h1{
+  color:var(--white);
+  text-shadow:3px 3px 0 var(--gold-dim), 0 0 20px rgba(138,20,20,.55);
+  animation:grietaGlitch 6s infinite;
+}
+@keyframes grietaGlitch{
+  0%,92%,100%{transform:translate(0,0);}
+  93%{transform:translate(-2px,1px);}
+  94%{transform:translate(2px,-1px);}
+  95%{transform:translate(-1px,0);}
+}
+.page-header p{color:var(--dim);}
+
+.tag-btn.active{background:var(--gold);border-color:var(--gold);color:#0d0505;}
+.tag-btn:hover{color:var(--white);}
+
+.post-card{background:var(--panel);border-color:var(--border);}
+.post-card:hover{border-color:var(--gold);}
+.post-card .pc-date{color:var(--gold);}
+.pill{color:#c98a8a;border-color:var(--gold-dim);}
+
+.post-detail h1{text-shadow:3px 3px 0 var(--gold-dim), 0 0 16px rgba(138,20,20,.4);}
+.post-detail .pd-meta{color:var(--gold);}
+.pd-body .pd-heading-lg{color:var(--gold);text-shadow:2px 2px 0 var(--gold-dim);}
+.pd-body .pd-heading-sm{color:var(--white);}
+
+footer{border-top-color:var(--border);}

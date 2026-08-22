@@ -1,0 +1,28 @@
+/*
+  POSTS-DATA-GRIETA.JS
+  ----------------------------------------
+  La versión escondida de posts-data.js — aquí viven los posts del
+  blog oculto (grieta.html). Funciona exactamente igual que el blog
+  normal: mismo formato de post, mismo post-render.js, mismas reglas.
+
+  CÓMO PUBLICAR AQUÍ
+  ----------------------------------------
+  Puedes usar new-post.html normalmente: en "OPCIONES AVANZADAS", en
+  el campo de la ruta del archivo, escribe:
+      posts-data-grieta.js
+  en vez de dejar el valor por defecto (posts-data.js). Así el botón
+  "PUBLICAR EN GITHUB" edita este archivo en lugar del otro. También
+  puedes editar el arreglo de abajo a mano, igual que en el blog
+  normal.
+*/
+
+const POSTS = [
+  {
+    slug: "no-deberias-estar-aqui",
+    title: "NO DEBERÍAS ESTAR AQUÍ",
+    date: "2026-08-22",
+    tags: ["???"],
+    excerpt: "Encontraste el punto rojo. Bien. O mal. Todavía no lo sé.",
+    content: "## Si estás leyendo esto, encontraste el punto.\n\nNo aparece siempre. No aparece en el mismo lugar dos veces. Y si parpadeas, probablemente te lo pierdas — vuelve a intentarlo la próxima vez que abras el blog.\n\nEsta es la parte de la página que no está en el menú. Aquí voy a dejar cosas distintas: ideas a medio terminar, borradores raros, cosas que no encajan en el blog normal.\n\n### Una nota para quien edite esto después\n\nEste archivo (posts-data-grieta.js) funciona exactamente igual que el normal. Copia el formato de un post, cambia el slug, y ya."
+  }
+];
