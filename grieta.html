@@ -8,9 +8,10 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="style-grieta.css">
 </head>
-<body>
+<body class="grieta-page">
 
 <div id="stars"></div>
+<div class="static-overlay" id="staticOverlay" aria-hidden="true"></div>
 
 <nav>
   <a href="index.html" class="nav-logo"><span class="nav-avatar-wrap"><img class="nav-avatar nav-avatar-normal" src="images/avatar.png" alt="" onerror="this.style.display='none'"><img class="nav-avatar nav-avatar-hover" src="images/avatar-hover.png" alt="" onerror="this.style.display='none'"></span>STARY<span class="heart">♥</span>MUFFIN</a>
@@ -48,6 +49,19 @@ const sorted = [...POSTS].sort((a,b)=> new Date(b.date) - new Date(a.date));
 wireNsfwReveal(postList);
 wireNsfwReveal(detailView);
 
+const staticOverlay = document.getElementById('staticOverlay');
+
+/* dispara un golpe de estática (como cambiar de canal) y, justo
+   cuando está en su punto más denso, ejecuta swapFn para cambiar
+   lo que se ve debajo — así la estática tapa el corte. */
+function playStatic(swapFn){
+  staticOverlay.classList.remove('burst');
+  void staticOverlay.offsetWidth; // fuerza el reflow para poder reiniciar la animación
+  staticOverlay.classList.add('burst');
+  setTimeout(swapFn, 160);
+  setTimeout(()=> staticOverlay.classList.remove('burst'), 480);
+}
+
 function renderList(){
   postList.innerHTML = '';
 
@@ -66,13 +80,7 @@ function renderList(){
   });
 }
 
-function openPost(slug){
-  const post = sorted.find(p => p.slug === slug);
-  if(!post) return;
-  location.hash = slug;
-  listView.style.display = 'none';
-  detailView.style.display = 'block';
-
+function buildPostDetail(post){
   const coverHtml = post.cover
     ? imageMarkup(post.cover, '', post.coverNsfw, 'pd-cover', 'pd-cover-wrap', true)
     : '';
@@ -91,15 +99,33 @@ function openPost(slug){
 
   pendingTextFiles.forEach(({id, path}) => loadTextFile(id, path));
   if(detailView.querySelector('.twitter-tweet')) loadTwitterWidgets(detailView);
-  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function openPost(slug){
+  const post = sorted.find(p => p.slug === slug);
+  if(!post) return;
+
+  listView.classList.add('pd-exit');
+  playStatic(()=>{
+    listView.classList.remove('pd-exit');
+    location.hash = slug;
+    listView.style.display = 'none';
+    detailView.style.display = 'block';
+    buildPostDetail(post);
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
 }
 
 function closeDetail(){
-  history.replaceState(null,'',location.pathname);
-  detailView.style.display = 'none';
-  listView.style.display = 'block';
-  renderList();
-  window.scrollTo({top:0,behavior:'smooth'});
+  detailView.classList.add('pd-exit');
+  playStatic(()=>{
+    detailView.classList.remove('pd-exit');
+    history.replaceState(null,'',location.pathname);
+    detailView.style.display = 'none';
+    listView.style.display = 'block';
+    renderList();
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
 }
 
 detailView.addEventListener('click', (e)=>{
