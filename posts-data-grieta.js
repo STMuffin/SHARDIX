@@ -23,6 +23,6 @@ const POSTS = [
     date: "2026-08-22",
     tags: ["???"],
     excerpt: "Encontraste el punto rojo. Bien. O mal. Todavía no lo sé.",
-    content: "## Si estás leyendo esto, encontraste el punto.\n\nNo aparece siempre. No aparece en el mismo lugar dos veces. Y si parpadeas, probablemente te lo pierdas — vuelve a intentarlo la próxima vez que abras el blog.\n\nEsta es la parte de la página que no está en el menú. Aquí voy a dejar cosas distintas: ideas a medio terminar, borradores raros, cosas que no encajan en el blog normal.\n\n### Una nota para quien edite esto después\n\nEste archivo (posts-data-grieta.js) funciona exactamente igual que el normal. Copia el formato de un post, cambia el slug, y ya."
+    content: "## Si estás leyendo esto, encontraste el punto.\n\nNo aparece siempre. No aparece en el mismo lugar dos veces. Y si parpadeas, probablemente te lo pierdas — vuelve a intentarlo la próxima vez que abras el blog.\n\nEsta es la parte de la página que no está en el menú. Aquí voy a dejar cosas distintas: ideas a medio terminar, borradores raros, cosas que no encajan en el blog normal.\n\n, y ya."
   }
 ];
