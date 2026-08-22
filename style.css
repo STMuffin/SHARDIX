@@ -451,14 +451,13 @@ footer .copy{font-size:10px;color:var(--dim);letter-spacing:.5px;line-height:1.7
 .mc-recent-date{font-size:8px;color:var(--gold);}
 
 /* ================= PUNTO ROJO ESCONDIDO ================= */
-/* Casi invisible, aparece cada cierto tiempo en una posición aleatoria
-   de la pantalla (ver secret-dot.js). Si le dan clic mientras está
-   visible, lleva a la página escondida (grieta.html).
-   Se ve del mismo tamaño y con el mismo parpadeo que las estrellas
-   del fondo (.star) — la única diferencia es el color. */
+/* Aparece cada cierto tiempo en una posición aleatoria de la pantalla
+   (ver secret-dot.js). Si le dan clic mientras está visible, lleva a
+   la página escondida (grieta.html). Un poco más notorio que las
+   estrellas del fondo, y suelta una onda circular mientras dura. */
 .secret-dot{
   position:fixed;
-  width:2px;height:2px;
+  width:4px;height:4px;
   border-radius:50%;
   background:#e0413f;
   border:none;
@@ -467,6 +466,7 @@ footer .copy{font-size:10px;color:var(--dim);letter-spacing:.5px;line-height:1.7
   z-index:5;
   opacity:0;
   pointer-events:none;
+  box-shadow:0 0 4px 1px rgba(224,65,63,.6);
   transition:opacity 1.2s ease;
 }
 /* área de clic real, invisible, más grande que el puntito visible
@@ -475,18 +475,38 @@ footer .copy{font-size:10px;color:var(--dim);letter-spacing:.5px;line-height:1.7
   content:"";
   position:absolute;
   top:50%;left:50%;
-  width:26px;height:26px;
+  width:28px;height:28px;
   transform:translate(-50%,-50%);
   border-radius:50%;
 }
+/* onda circular que se expande y se desvanece, repitiéndose mientras
+   el punto está visible */
+.secret-dot::after{
+  content:"";
+  position:absolute;
+  top:50%;left:50%;
+  width:4px;height:4px;
+  border-radius:50%;
+  border:1px solid #e0413f;
+  transform:translate(-50%,-50%) scale(1);
+  opacity:0;
+  pointer-events:none;
+}
 .secret-dot.show{
-  opacity:.4;
+  opacity:.55;
   pointer-events:auto;
   animation:secretTwinkle 2.6s infinite ease-in-out;
 }
+.secret-dot.show::after{
+  animation:secretRipple 1.8s ease-out infinite;
+}
 @keyframes secretTwinkle{
-  0%,100%{opacity:.15;}
-  50%{opacity:.75;}
+  0%,100%{opacity:.3;}
+  50%{opacity:.85;}
+}
+@keyframes secretRipple{
+  0%{transform:translate(-50%,-50%) scale(1); opacity:.55;}
+  100%{transform:translate(-50%,-50%) scale(11); opacity:0;}
 }
 @media (hover:hover){
   .secret-dot.show:hover{opacity:1;}
