@@ -131,3 +131,56 @@ html::after{
     -1px 0 rgba(255,40,40,.28),
     1px 0 rgba(40,220,255,.2);
 }
+
+/* ================= ESTÁTICA AL ABRIR/CERRAR UN POST ================= */
+
+/* capa de estática tipo TV, quieta hasta que se le agrega .burst
+   (ver playStatic() en grieta.html) */
+.static-overlay{
+  position:fixed;inset:0;
+  z-index:30;
+  pointer-events:none;
+  opacity:0;
+  background:
+    repeating-linear-gradient(0deg, rgba(230,230,230,.9) 0 1px, rgba(5,5,5,.9) 1px 2px),
+    repeating-linear-gradient(90deg, rgba(230,230,230,.4) 0 1px, transparent 1px 3px);
+  background-size:3px 3px, 5px 5px;
+  filter:contrast(1.5) brightness(1.1);
+}
+.static-overlay.burst{
+  animation:grietaStatic .48s steps(8) 1;
+}
+@keyframes grietaStatic{
+  0%{opacity:0; background-position:0 0, 0 0;}
+  8%{opacity:.9; background-position:11px 3px, 5px 9px;}
+  20%{opacity:.8; background-position:2px 17px, 23px 2px;}
+  33%{opacity:.9; background-position:19px 5px, 4px 14px;}
+  46%{opacity:.7; background-position:6px 21px, 17px 6px;}
+  60%{opacity:.85; background-position:14px 2px, 9px 19px;}
+  74%{opacity:.5; background-position:3px 9px, 12px 4px;}
+  88%{opacity:.2; background-position:8px 6px, 2px 11px;}
+  100%{opacity:0; background-position:0 0, 0 0;}
+}
+
+/* entrada: en vez del simple "aparece y sube" del blog normal, el
+   contenido tiembla y se enfoca, como si la señal se acomodara */
+@keyframes grietaEnter{
+  0%{opacity:0; transform:translateY(8px) skewX(1.5deg); filter:blur(3px) contrast(1.4);}
+  35%{opacity:.65; transform:translateY(-2px) skewX(-1deg); filter:blur(1.5px) contrast(1.2);}
+  65%{opacity:.9; transform:translateY(1px) skewX(.5deg); filter:blur(.5px);}
+  100%{opacity:1; transform:translateY(0) skewX(0); filter:none;}
+}
+.grieta-page .pd-enter{
+  animation:grietaEnter .5s ease-out forwards;
+}
+
+/* salida: la sección se corta y se va como si perdieras la señal,
+   en vez de solo desaparecer de golpe */
+@keyframes grietaExit{
+  0%{opacity:1; transform:translateY(0); filter:none;}
+  40%{opacity:.55; transform:translateY(-3px) skewX(-1deg); filter:blur(2px) contrast(1.4);}
+  100%{opacity:0; transform:translateY(4px) skewX(1deg); filter:blur(5px) contrast(1.6);}
+}
+.grieta-page .pd-exit{
+  animation:grietaExit .32s ease-in forwards;
+}
