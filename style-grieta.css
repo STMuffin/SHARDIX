@@ -74,3 +74,60 @@ nav{border-bottom-color:var(--border);}
 .pd-body .pd-heading-sm{color:var(--white);}
 
 footer{border-top-color:var(--border);}
+
+/* ================= VHS / GLITCH (sutil) ================= */
+
+/* líneas de escaneo fijas, muy tenues, sobre todo el contenido */
+body::after{
+  content:"";
+  position:fixed;inset:0;
+  pointer-events:none;z-index:3;
+  background:repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,.025) 0px,
+    rgba(255,255,255,.025) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode:overlay;
+}
+
+/* corte de tracking: una franja angosta se desplaza lateralmente de
+   vez en cuando, como una cinta VHS mal alineada. Muy breve, poco
+   frecuente y en su propia capa (no toca la viñeta ni el contenido). */
+@keyframes vhsTracking{
+  0%,97%,100%{transform:translateX(0); clip-path:inset(0 0 100% 0);}
+  97.4%{transform:translateX(-6px); clip-path:inset(34% 0 58% 0);}
+  97.8%{transform:translateX(5px); clip-path:inset(61% 0 22% 0);}
+  98.2%{transform:translateX(-3px); clip-path:inset(12% 0 81% 0);}
+  98.6%{transform:translateX(0); clip-path:inset(0 0 100% 0);}
+}
+html::after{
+  content:"";
+  position:fixed;inset:0;
+  pointer-events:none;z-index:4;
+  background:rgba(200,200,200,.05);
+  animation:vhsTracking 14s infinite;
+}
+
+/* aberración cromática leve en los títulos, típica de VHS/mala señal */
+.page-header h1{
+  text-shadow:
+    3px 3px 0 var(--gold-dim),
+    0 0 20px rgba(138,20,20,.55),
+    -1.5px 0 rgba(255,40,40,.35),
+    1.5px 0 rgba(40,220,255,.25);
+}
+.post-detail h1{
+  text-shadow:
+    3px 3px 0 var(--gold-dim),
+    0 0 16px rgba(138,20,20,.4),
+    -1px 0 rgba(255,40,40,.3),
+    1px 0 rgba(40,220,255,.22);
+}
+.pd-body .pd-heading-lg{
+  text-shadow:
+    2px 2px 0 var(--gold-dim),
+    -1px 0 rgba(255,40,40,.28),
+    1px 0 rgba(40,220,255,.2);
+}
