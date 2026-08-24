@@ -29,14 +29,7 @@
 */
 
 const POSTS = [
-  {
-    slug: "un-poco-de-mi-musica-1",
-    title: "Un poco de mi - Musica #1",
-    date: "2312-02-04",
-    tags: ["test"],
-    excerpt: "sadasd",
-    content: "asdasd\n\n\n[archivo:](images/1787559849475-letra-espanol-brucee.txt)"
-  },
+  
   {
     slug: "shardix-update-1",
     title: "SHARDIX - UPDATE 1",
