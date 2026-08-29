@@ -86,8 +86,8 @@
   </div>
 
   <div class="field">
-    <label for="f-date">FECHA</label>
-    <input type="date" id="f-date">
+    <label for="f-date">FECHA Y HORA</label>
+    <input type="datetime-local" id="f-date">
   </div>
 
   <div class="field">
@@ -230,11 +230,22 @@
 
 <script src="stars.js"></script>
 <script src="post-render.js"></script>
+<script>window.GH_AUTH_KEY = 'gh_auth_grieta';</script>
 <script src="github-auth.js"></script>
 <script src="post-editor.js"></script>
 <script>
 initGithubLogin();
 initPostEditor();
+
+/* precarga la fecha y hora actuales en el campo, sigue siendo editable */
+(function(){
+  const f = document.getElementById('f-date');
+  if(!f.value){
+    const now = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    f.value = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  }
+})();
 
 document.getElementById('genBtn').addEventListener('click', ()=>{
   const title = document.getElementById('f-title').value.trim();
