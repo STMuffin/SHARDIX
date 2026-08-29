@@ -18,6 +18,15 @@
 
 const POSTS = [
   {
+    slug: "test",
+    title: "test",
+    date: "2026-08-29T01:35",
+    tags: ["test"],
+    cover: "images/1787992623031-screenshot-2026-08-20-103228.png",
+    excerpt: "asdasd",
+    content: "asdasdasd"
+  },
+  {
     slug: "no-deberias-estar-aqui",
     title: "NO DEBERÍAS ESTAR AQUÍ",
     date: "2026-08-22",
