@@ -11,10 +11,19 @@
 
   Si la página define window.onGithubLogin(auth), se llama justo
   después de iniciar sesión (o si ya había una sesión guardada).
+
+  Si la página define window.GH_AUTH_KEY (ANTES de cargar este script),
+  la sesión se guarda bajo esa llave en vez de la llave por defecto
+  ("gh_auth"). Esto es lo que usa new-post-grieta.html para tener su
+  propia sesión, separada de la del blog normal — así iniciar sesión
+  en una página no te deja publicando sin querer en el archivo de la
+  otra.
 */
 
+const GH_AUTH_KEY = window.GH_AUTH_KEY || 'gh_auth';
+
 function getAuth(){
-  const raw = sessionStorage.getItem('gh_auth');
+  const raw = sessionStorage.getItem(GH_AUTH_KEY);
   return raw ? JSON.parse(raw) : null;
 }
 
@@ -55,12 +64,12 @@ function initGithubLogin(){
       return;
     }
     const [owner, repo] = parts;
-    sessionStorage.setItem('gh_auth', JSON.stringify({owner, repo, branch, path, token}));
+    sessionStorage.setItem(GH_AUTH_KEY, JSON.stringify({owner, repo, branch, path, token}));
     ghShowApp();
   });
 
   document.getElementById('logoutBtn').addEventListener('click', ()=>{
-    sessionStorage.removeItem('gh_auth');
+    sessionStorage.removeItem(GH_AUTH_KEY);
     ghShowLogin();
   });
 
