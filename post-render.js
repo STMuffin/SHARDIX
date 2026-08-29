@@ -19,9 +19,14 @@
 */
 
 function formatDate(iso){
-  const d = new Date(iso + 'T00:00:00');
+  const hasTime = iso.includes('T');
+  const d = hasTime ? new Date(iso) : new Date(iso + 'T00:00:00');
   const meses = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
-  return d.getDate() + ' ' + meses[d.getMonth()] + ' ' + d.getFullYear();
+  const fecha = d.getDate() + ' ' + meses[d.getMonth()] + ' ' + d.getFullYear();
+  if(!hasTime) return fecha;
+  const hh = String(d.getHours()).padStart(2, '0');
+  const mm = String(d.getMinutes()).padStart(2, '0');
+  return fecha + ' · ' + hh + ':' + mm;
 }
 
 function escapeHtml(s){
